@@ -9,12 +9,11 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["Auth.API/Auth.API.csproj", "Auth.API/"]
-RUN dotnet restore "Auth.API/Auth.API.csproj"
-COPY . .
-WORKDIR "/src/Auth.API"
-RUN dotnet build "Auth.API.csproj" -c Release -o /app/build
+COPY *.csproj ./
 
+RUN dotnet restore
+
+COPY . ./
 FROM build AS publish
 RUN dotnet publish "Auth.API.csproj" -c Release -o /app/publish
 
