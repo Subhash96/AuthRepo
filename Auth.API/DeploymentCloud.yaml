@@ -1,26 +1,26 @@
-﻿apiVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: authmc-deployment 
+  name: authapp-deployment 
   labels:
-    app: authmc 
+    app: authapp 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: authmc
+      app: authapp
   template:
     metadata:
       labels:
-        app: authmc
+        app: authapp
     spec:
       containers:
-      - name: authmc
-        image: pensioncr.azurecr.io/authmcimage:latest
+      - name: authapp
+        image: authapir.azurecr.io/authrepoimage:latest
         resources:
         env:
            - name: ConnectionString
-             value: Server = "tcp:authpension.database.windows.net,1433; Initial Catalog = MSONEPensionDb; Persist Security Info = False; User ID = pension; Password = Subhadip@1202; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;"
+             value: Server = "tcp:return-server.database.windows.net,1433;Initial Catalog=LoginModels;Persist Security Info=False;User ID=admin1;Password=Subhash@1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
         ports:
         - containerPort: 8080
       imagePullSecrets:
@@ -31,10 +31,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: authmcsvc
+  name: authappsvc
 spec:
   type: LoadBalancer
   selector:
-    app: authmc
+    app: authapp
   ports:
   - port: 80
